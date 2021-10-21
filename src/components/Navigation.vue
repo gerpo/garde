@@ -3,7 +3,7 @@
         <!-- Sidebar starts -->
         <!-- Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] -->
         <div
-            class="fixed top-0 flex flex-col justify-between h-screen duration-150 ease-in-out bg-gray-800 shadow sm:sticky w-72 sm:translate-x-0"
+            class="fixed top-0 z-10 flex flex-col justify-between h-screen duration-150 ease-in-out bg-gray-800 shadow sm:sticky w-72 sm:translate-x-0"
             :class="{
                 '-translate-x-72': !menuVisible && (settings.menuSide === MenuSide.LEFT),
                 'translate-x-72': !menuVisible && (settings.menuSide === MenuSide.RIGHT),
@@ -276,9 +276,8 @@
             </div>
         </div>
         <!-- Sidebar ends -->
-        <!-- Remove class [ h-64 ] when adding a card block -->
+        
         <div class="container mx-auto sm:py-10">
-            <!-- Remove class [ border-dashed border-2 border-gray-300 ] to remove dotted border -->
             <div class="w-full h-full px-4 py-5 bg-white rounded sm:px-6">
                 <component :is="currentComponent" />
             </div>
