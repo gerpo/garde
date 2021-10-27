@@ -1,9 +1,9 @@
 import { RouteNames } from '../services/router';
 import axios from 'axios';
-import { isLoggedIn } from '../services/isLoggedIn';
 import router from '../services/router'
+import { useAuthState } from '../services/isLoggedIn';
 
-const loggedInState = isLoggedIn()
+const loggedInState = useAuthState()
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post['Content-Type'] = 'application/json';

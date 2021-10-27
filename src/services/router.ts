@@ -7,10 +7,10 @@ import Home from '../components/Home.vue';
 import Navigation from '../components/Navigation.vue';
 import NotFound from '../components/NotFound.vue'
 import axios from '../utils/axios'
-import { isLoggedIn } from './isLoggedIn';
+import { useAuthState } from './isLoggedIn';
 import { useUser } from './useUser';
 
-const loggedInState = isLoggedIn()
+const loggedInState = useAuthState()
 const user = useUser();
 
 export enum RouteNames {
@@ -41,7 +41,6 @@ const routes = [
         beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized) => {
             axios.post('/api/logout').then(() => {
                 loggedInState.value = false
-                user.value = null;
                 return router.replace({ name: RouteNames.Login });
             })
         }
