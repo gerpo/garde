@@ -99,19 +99,21 @@ import { LockClosedIcon } from '@heroicons/vue/solid';
 import { useRouter, useRoute } from 'vue-router';
 import axios from '../../utils/axios';
 import { useToast } from "vue-toastification";
+import { isLoggedIn } from '../../services/isLoggedIn';
 
 const router = useRouter();
 const route = useRoute();
 const toast = useToast();
 
 const mode = ref(MODES.Login);
+const loggedInState = isLoggedIn()
 
 function logIn() {
   axios.get('/sanctum/csrf-cookie').then(_ =>
     axios.post('/login', { email: 'test@example.com', password: 'password' })
-      .then(response => {
-        localStorage.setItem('loggedIn', 'true');
-        router.push(route.query.redirect ?? '/')
+      .then(_ => {
+        loggedInState.value = true;
+        router.push({path: route.query.redirect?.toString() ?? '/'})
       }).catch(error => toast.error(error.message)));
 
 }
