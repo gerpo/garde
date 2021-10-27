@@ -1,11 +1,17 @@
-import { createWebHistory, createRouter, RouteLocationNormalized } from 'vue-router';
-import Auth from '../components/Auth/Auth.vue';
-import Navigation from '../components/Navigation.vue';
-import Home from '../components/Home.vue';
-import HelloWorld from '../components/HelloWorld.vue';
+import { RouteLocationNormalized, createRouter, createWebHistory } from 'vue-router';
+
 import Appointments from '../components/Appointments/Appointments.vue';
+import Auth from '../components/Auth/Auth.vue';
+import HelloWorld from '../components/HelloWorld.vue';
+import Home from '../components/Home.vue';
+import Navigation from '../components/Navigation.vue';
 import NotFound from '../components/NotFound.vue'
 import axios from '../utils/axios'
+import { isLoggedIn } from './isLoggedIn';
+import { useUser } from './useUser';
+
+const loggedInState = isLoggedIn()
+const user = useUser();
 
 export enum RouteNames {
     Home = 'Home',
@@ -29,12 +35,13 @@ const routes = [
         component: Auth,
     },
     {
-        path: "/logout",
+        path: "/auth/logout",
         name: RouteNames.Logout,
         component: Auth,
         beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized) => {
-            axios.post('/logout').then(() => {
-                localStorage.removeItem('loggedIn');
+            axios.post('/api/logout').then(() => {
+                loggedInState.value = false
+                user.value = null;
                 return router.replace({ name: RouteNames.Login });
             })
         }
@@ -70,7 +77,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, _) => {
-    const loggedIn = localStorage.getItem('loggedIn');
+    const loggedIn = loggedInState.value;
     if (to.name === RouteNames.Login && !loggedIn) return;
     if (!loggedIn) return router.replace({ name: RouteNames.Login, query: { redirect: to.fullPath } });
     if (to.name === RouteNames.Login && loggedIn) return router.replace({ name: RouteNames.Home });

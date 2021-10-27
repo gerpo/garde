@@ -11,7 +11,7 @@ export default [
         )
     }),
 
-    rest.get(`${BASE_URL}/api/user`, (req, res, ctx) => {
+    /* rest.get(`${BASE_URL}/api/user`, (req, res, ctx) => {
         return res(
             ctx.json({
                 "id": 1,
@@ -24,5 +24,5 @@ export default [
                 "updated_at": "2021-10-15T13:30:25.000000Z"
             })
         )
-    })
+    }) */
 ]

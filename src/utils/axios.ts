@@ -1,6 +1,9 @@
-import axios from 'axios';
 import { RouteNames } from '../services/router';
+import axios from 'axios';
+import { isLoggedIn } from '../services/isLoggedIn';
 import router from '../services/router'
+
+const loggedInState = isLoggedIn()
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -14,7 +17,7 @@ axios.interceptors.response.use(
     error => {
         const { status } = error.response;
         if (status === 401) {
-            localStorage.removeItem('loggedIn')
+            loggedInState.value = false;
             router.push({ name: RouteNames.Login })
         }
         return Promise.reject(error);
