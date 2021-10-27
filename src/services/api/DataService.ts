@@ -1,12 +1,13 @@
 import { AxiosResponse } from 'axios';
 import axios from '../../utils/axios'
 
+type ServiceData<T> = { state: 'success', data: T } | { state: 'failure', message: string } | { state: 'loading' }
 
 export abstract class DataService<T>  {
     abstract PATH: string;
 
     getAll() {
-        return axios.get<AxiosResponse<T[]>>(`${this.PATH}`);
+        return axios.get<T[]>(`${this.PATH}`);
     }
 
     get({ id }: { id: number | string }) {
