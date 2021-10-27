@@ -20,7 +20,7 @@ export function createMonthString(key: string) {
 }
 
 type KeysOfType<T, TProp> = { [P in keyof T]: T[P] extends TProp ? P : never }[keyof T];
-export const groupByMonth = <T extends any, K extends KeysOfType<T, Date>>(array: T[], key: K) => {
+export const groupByMonth = <T extends {}, K extends KeysOfType<T, Date>>(array: T[], key: K) => {
     // Return the reduced array
     return array.reduce((result, currentItem) => {
         const dateKey = `${currentItem[key].getFullYear()}.${currentItem[key].getMonth()}`;
@@ -28,5 +28,5 @@ export const groupByMonth = <T extends any, K extends KeysOfType<T, Date>>(array
         (result[dateKey] = result[dateKey] || []).push(currentItem);
         // return the current iteration `result` value, this will be the next iteration's `result` value and accumulate
         return result;
-    }, {}); // Empty object is the initial value for result object
+    }, {} as {[key: string]: T[]}); // Empty object is the initial value for result object
 };
