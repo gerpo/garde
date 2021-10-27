@@ -278,6 +278,7 @@
         <!-- Sidebar ends -->
         
         <div class="container mx-auto sm:py-10">
+            <div id="main-header" class="p-2 mb-2 bg-white rounded"></div>
             <div class="w-full h-full px-4 py-5 bg-white rounded sm:px-6">
                 <component :is="currentComponent" />
             </div>
@@ -313,5 +314,9 @@ function toggleMenu() {
 <style lang="postcss">
 .router-link-exact-active {
     @apply text-gray-300;
+}
+
+#main-header:empty {
+    display: none
 }
 </style>

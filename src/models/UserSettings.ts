@@ -13,5 +13,5 @@ export interface IUserSettings {
 
 export class UserSettings implements IUserSettings {
     menuSide: MenuSide = MenuSide.LEFT;
-    appointmentViewMode = ViewMode.CALENDAR
+    appointmentViewMode = ViewMode.LIST
 }

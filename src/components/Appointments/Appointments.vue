@@ -1,5 +1,14 @@
 <template>
     <div class="flex justify-end w-full -mb-2">
+        <div class="flex mr-auto">
+            <button
+            @click="createModalVisible = true"
+                class="h-full p-2 border border-green-600 hover:bg-green-400 not:first:-ml-1 hover:text-white bg-green-50 first:rounded-l hover:shadow-inner last:rounded-r"
+            >
+                <plus-icon class="w-5 h-5 fill-current" />
+            </button>
+        </div>
+        
         <button
             class="p-2 bg-gray-100 rounded-l hover:bg-gray-300"
             :class="{ 'bg-gray-300 shadow-inner': selectedViewMode === ViewMode.LIST }"
@@ -20,20 +29,45 @@
     <div v-if="selectedViewMode === ViewMode.LIST">
         <appointment-list
             :appointments="data"
-            v-if="!loading && data"
+            v-if="!debouncedLoading && data"
             @open-details="showAppointmentDetails"
         />
     </div>
     <div v-else-if="selectedViewMode === ViewMode.CALENDAR">
         <appointment-calendar
             :appointments="data"
-            v-if="!loading && data"
+            v-if="!debouncedLoading && data"
             @open-details="showAppointmentDetails"
         />
     </div>
 
+    <div v-if="debouncedLoading" class="flex flex-col items-center justify-center w-full h-full">
+        <floating class="overflow-visible h-36 sm:h-48" />
+        <h3 class="sm:text-xl">
+            Looking for all the appointments
+            <span class="animate-pulse">...</span>
+        </h3>
+    </div>
+
+    <div v-if="!debouncedLoading && !data && !error" class="flex flex-col items-center justify-center w-full h-full">
+        <not-found class="overflow-visible h-36 sm:h-48" />
+        <h3 class="sm:text-xl">
+            No appointments found for you.
+        </h3>
+    </div>
+
+    <div v-if="!debouncedLoading && !data && error" class="flex flex-col items-center justify-center w-full h-full">
+        <error-image class="overflow-visible h-36 sm:h-48" />
+        <h3 class="sm:text-xl">
+            Error jo
+        </h3>
+    </div>
+
     <modal v-model:show="modalVisible">
         <appointment-details :appointment="selectedAppointment" />
+    </modal>
+    <modal v-model:show="createModalVisible">
+        <create-appointment />
     </modal>
 </template>
 
@@ -48,14 +82,20 @@ import { useRoute, useRouter } from 'vue-router';
 import { RouteNames } from '../../services/router';
 import { useAppointmentService } from '../../services/api/useDataService';
 import AppointmentList from './AppointmentList.vue';
-import { ViewBoardsIcon, ViewListIcon } from '@heroicons/vue/solid';
+import { ViewBoardsIcon, ViewListIcon, PlusIcon } from '@heroicons/vue/solid';
 import AppointmentCalendar from './AppointmentCalendar.vue';
 import { UserSettings, ViewMode } from '../../models/UserSettings'
+import { useDebounce } from '@vueuse/core';
+import Floating from '../../assets/floating.svg?component';
+import NotFound from '../../assets/not_found.svg?component';
+import ErrorImage from '../../assets/error.svg?component';
+import CreateAppointment from './CreateAppointment.vue';
 
 const settings = inject('settings') as UserSettings;
 
 const selectedViewMode = ref(settings.appointmentViewMode);
 const modalVisible = ref(false);
+const createModalVisible = ref(false);
 const selectedAppointment = ref<Appointment>(new DummyAppointment());
 const { params } = useRoute();
 const router = useRouter();
@@ -66,6 +106,8 @@ function showAppointmentDetails(item: Appointment) {
     selectedAppointment.value = item;
     modalVisible.value = true;
 }
+
+const debouncedLoading = useDebounce(loading, 200);
 
 watch(() => modalVisible.value, (value, oldValue) => {
     if (value) router.replace({ name: RouteNames.ShowAppointment, params: { id: selectedAppointment.value.id } })

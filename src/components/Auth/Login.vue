@@ -108,7 +108,7 @@ const mode = ref(MODES.Login);
 
 function logIn() {
   axios.get('/sanctum/csrf-cookie').then(_ =>
-    axios.post('/login', { email: 'damore.alvera@example.net', password: 'password' })
+    axios.post('/login', { email: 'test@example.com', password: 'password' })
       .then(response => {
         localStorage.setItem('loggedIn', 'true');
         router.push(route.query.redirect ?? '/')
