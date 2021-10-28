@@ -1,12 +1,13 @@
-import { createApp } from 'vue';
-import { setupI18n, loadLocaleMessages } from './services/i18n/i18n'
-import router from './services/router'
-
-import App from './App.vue'
 import './index.css'
+import "vue-toastification/dist/index.css";
 
 import Toast, { PluginOptions } from "vue-toastification";
-import "vue-toastification/dist/index.css";
+import { loadLocaleMessages, setupI18n } from './services/i18n/i18n'
+
+import App from './App.vue'
+import { createApp } from 'vue';
+import router from './services/router'
+import { store } from './services/store/store';
 
 if (process.env.NODE_ENV === 'development') {
     const { worker } = await import('./mocks/browser')
@@ -27,6 +28,7 @@ const options: PluginOptions = {
 
 createApp(App)
     .use(router)
+    .use(store)
     .use(i18n)
     .use(Toast, options)
     .mount('#app')

@@ -61,10 +61,7 @@
         </div>
 
         <div class="text-sm">
-          <a
-            href="#"
-            class="font-medium text-red-600 hover:text-red-500"
-          >Forgot your password?</a>
+          <a href="#" class="font-medium text-red-600 hover:text-red-500">Forgot your password?</a>
         </div>
       </div>
 
@@ -100,8 +97,11 @@ import { useRouter, useRoute } from 'vue-router';
 import axios from '../../utils/axios';
 import { useToast } from "vue-toastification";
 import { useAuthState } from '../../services/isLoggedIn';
+import { useStore } from '../../services/store/store';
+import { ActionTypes } from '../../services/store/actions';
 
 const router = useRouter();
+const store = useStore();
 const route = useRoute();
 const toast = useToast();
 
@@ -113,7 +113,9 @@ function logIn() {
     axios.post('/login', { email: 'test@example.com', password: 'password' })
       .then(_ => {
         isLoggedIn.value = true;
-        router.push({path: route.query.redirect?.toString() ?? '/'})
+        router.push({ path: route.query.redirect?.toString() ?? '/' })
+
+        store.dispatch(ActionTypes.LoadUser)
       }).catch(error => toast.error(error.message)));
 
 }
