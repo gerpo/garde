@@ -11,7 +11,7 @@ import { useAuthState } from './isLoggedIn';
 import { useUser } from './useUser';
 
 const loggedInState = useAuthState()
-const user = useUser();
+//const user = useUser();
 
 export enum RouteNames {
     Home = 'Home',

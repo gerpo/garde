@@ -13,7 +13,7 @@ export const useAppointments = () => {
 
     const status = ref<'loading' | 'refreshing' | 'success' | 'error'>('loading');
     const error = ref('');
-    const fetchUser = async () => {
+    const fetchAppointments = async () => {
         status.value = (appointmentState.value.length === 0) ? 'loading' : 'refreshing';
 
         await axios.get<{ data: Appointment[] }>('/api/appointments')
@@ -26,7 +26,7 @@ export const useAppointments = () => {
             })
     }
 
-    fetchUser()
+    fetchAppointments()
 
-    return { status, appointmentState, error, fetchUser }
+    return { status, appointmentState, error, fetchAppointments }
 }

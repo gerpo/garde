@@ -1,8 +1,6 @@
-
-import axios from '../../utils/axios';
-import { AxiosResponse } from 'axios';
 import { Appointment } from '../../models/Appointment';
 import { DataService } from './DataService';
+import axios from '../../utils/axios';
 
 export class AppointmentDataService extends DataService<Appointment> {
     PATH = '/api/appointments';
