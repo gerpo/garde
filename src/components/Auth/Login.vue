@@ -114,7 +114,6 @@ function logIn() {
       .then(_ => {
         isLoggedIn.value = true;
         router.push({ path: route.query.redirect?.toString() ?? '/' })
-
         store.dispatch(ActionTypes.LoadUser)
       }).catch(error => toast.error(error.message)));
 

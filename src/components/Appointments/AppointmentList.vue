@@ -51,7 +51,6 @@ import { computed, ComputedRef } from 'vue';
 import ConfirmationButton from './ConfirmationButton.vue'
 
 const props = defineProps<{ appointments: Appointment[] }>();
-//const emit = defineEmits<{ (event: 'openDetails', appointment: Appointment): void }>();
 const emit = defineEmits(['openDetails'])
 
 function showAppointmentDetails(appointment: Appointment) {
@@ -60,3 +59,17 @@ function showAppointmentDetails(appointment: Appointment) {
 
 const orderedAppointments: ComputedRef<{ [key: string]: Appointment[] }> = computed(() => groupByMonth(props.appointments, 'datetime'));
 </script>
+
+<style scoped>
+.slide-fade-enter-active {
+    transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+    transition: all 0.3s ease-in-out;
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
+}
+</style>

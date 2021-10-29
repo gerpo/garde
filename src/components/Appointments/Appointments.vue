@@ -28,15 +28,15 @@
     </div>
     <div v-if="selectedViewMode === ViewMode.LIST">
         <appointment-list
-            :appointments="data"
-            v-if="status !== 'refreshing'"
+            :appointments="appointments"
+            v-if="!debouncedLoading && appointments"
             @open-details="showAppointmentDetails"
         />
     </div>
     <div v-else-if="selectedViewMode === ViewMode.CALENDAR">
         <appointment-calendar
-            :appointments="data"
-            v-if="!debouncedLoading && data.length > 0"
+            :appointments="appointments"
+            v-if="!debouncedLoading && appointments"
             @open-details="showAppointmentDetails"
         />
     </div>
@@ -50,7 +50,7 @@
     </div>
 
     <div
-        v-if="!debouncedLoading && !data && !error"
+        v-if="!debouncedLoading && !appointments"
         class="flex flex-col items-center justify-center w-full h-full"
     >
         <not-found class="overflow-visible h-36 sm:h-48" />
@@ -58,14 +58,14 @@
     </div>
 
     <div
-        v-if="!debouncedLoading && !data && error"
+        v-if="!debouncedLoading && !appointments"
         class="flex flex-col items-center justify-center w-full h-full"
     >
         <error-image class="overflow-visible h-36 sm:h-48" />
         <h3 class="sm:text-xl">Error jo</h3>
     </div>
 
-    <modal v-model:show="modalVisible">
+    <modal v-model:show="detailModalVisible">
         <appointment-details :appointment="selectedAppointment" />
     </modal>
     <modal v-model:show="createModalVisible">
@@ -76,60 +76,53 @@
 
 
 <script setup lang="ts">
-import { ref, watch, onMounted, inject } from 'vue';
+import { ref, watch, onMounted, inject, computed } from 'vue';
 import { Appointment, DummyAppointment } from '../../models/Appointment';
 import Modal from '../Modal.vue';
 import AppointmentDetails from './AppointmentDetails.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { RouteNames } from '../../services/router';
-import { useAppointmentService } from '../../services/api/useDataService';
 import AppointmentList from './AppointmentList.vue';
 import { ViewBoardsIcon, ViewListIcon, PlusIcon } from '@heroicons/vue/solid';
 import AppointmentCalendar from './AppointmentCalendar.vue';
-import { UserSettings, ViewMode } from '../../models/UserSettings'
+import { ViewMode } from '../../models/UserSettings'
 import { useDebounce } from '@vueuse/core';
 import Floating from '../../assets/floating.svg?component';
 import NotFound from '../../assets/not_found.svg?component';
 import ErrorImage from '../../assets/error.svg?component';
 import CreateAppointment from './CreateAppointment.vue';
-import { useAppointments } from '../../services/useAppointments';
+import { useStore } from '../../services/store/store';
+import { ActionTypes } from '../../services/store/actions';
 
-const settings = inject('settings') as UserSettings;
+const selectedViewMode = computed(() => store.state.settings.appointmentViewMode);
 
-const selectedViewMode = ref(settings.appointmentViewMode);
-const modalVisible = ref(false);
-const createModalVisible = ref(false);
+
 const selectedAppointment = ref<Appointment>(new DummyAppointment());
 const { params } = useRoute();
 const router = useRouter();
+const store = useStore();
 
-const { getData: getAllAppointments } = useAppointmentService('getAll')
-
-function showAppointmentDetails(item: Appointment) {
-    selectedAppointment.value = item;
-    modalVisible.value = true;
-}
-
-const { status, appointmentState: data, error, fetchAppointments } = useAppointments()
 
 const loading = ref(false);
 const debouncedLoading = useDebounce(loading, 200);
+const appointments = computed(() => store.state.appointments)
 
+const createModalVisible = ref(false);
 
-watch(status, (value) => {
-    if (value === 'loading' || value === 'refreshing') { loading.value = true }
-    else { loading.value = false }
-})
-
-watch(() => modalVisible.value, (value, oldValue) => {
+const detailModalVisible = ref(false);
+function showAppointmentDetails(item: Appointment) {
+    selectedAppointment.value = item;
+    detailModalVisible.value = true;
+}
+watch(() => detailModalVisible.value, (value) => {
     if (value) router.replace({ name: RouteNames.ShowAppointment, params: { id: selectedAppointment.value.id } })
     if (!value) router.replace({ name: RouteNames.Appointments })
 })
 
 onMounted(async () => {
-    await fetchAppointments();
+    store.dispatch(ActionTypes.LoadAppointments);
     if (params.id) {
-        const it = (data.value as Appointment[]).find(item => item.id === parseInt(params.id as string));
+        const it = (appointments.value as Appointment[]).find(item => item.id === parseInt(params.id as string));
         if (it !== undefined) showAppointmentDetails(it);
     }
 })
@@ -137,16 +130,3 @@ onMounted(async () => {
 
 </script>
 
-<style scoped>
-.slide-fade-enter-active {
-    transition: all 0.3s ease;
-}
-.slide-fade-leave-active {
-    transition: all 0.3s ease-in-out;
-}
-.slide-fade-enter,
-.slide-fade-leave-to {
-    transform: translateX(10px);
-    opacity: 0;
-}
-</style>

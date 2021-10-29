@@ -22,7 +22,7 @@ const i18n = setupI18n({
 
 loadLocaleMessages(i18n, locale);
 
-const options: PluginOptions = {
+const toastOptions: PluginOptions = {
     // You can set your default options here
 };
 
@@ -30,5 +30,5 @@ createApp(App)
     .use(router)
     .use(store)
     .use(i18n)
-    .use(Toast, options)
+    .use(Toast, toastOptions)
     .mount('#app')

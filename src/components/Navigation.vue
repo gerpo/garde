@@ -102,7 +102,7 @@
                                 <span class="ml-2 text-sm">{{ t('appointments') }}</span>
                             </div>
                         </router-link>
-                        <nav-tag :count="12" />
+                        <nav-tag :count="idleAppointments" v-if="idleAppointments" />
                     </li>
                     <li
                         class="flex items-center justify-between w-full mb-6 text-gray-600 cursor-pointer hover:text-gray-500"
@@ -276,7 +276,7 @@
             </div>
         </div>
         <!-- Sidebar ends -->
-        
+
         <div class="container mx-auto sm:py-10">
             <div id="main-header" class="p-2 mb-2 bg-white rounded"></div>
             <div class="w-full h-full px-4 py-5 bg-white rounded sm:px-6">
@@ -288,26 +288,31 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-import { inject, ref } from 'vue';
-import { UserSettings, MenuSide } from '../models/UserSettings';
+import { ref, computed } from 'vue';
+import { MenuSide } from '../models/UserSettings';
 import { LogoutIcon, CalendarIcon, MenuIcon } from '@heroicons/vue/solid';
 import { onClickOutside } from '@vueuse/core';
 import { useI18n } from 'vue-i18n';
 import { RouteNames } from '../services/router';
 import NavTag from './NavTag.vue';
+import { useStore } from '../services/store/store';
 
 defineProps<{ currentComponent: any; }>();
 
-const settings = inject('settings') as UserSettings;
 const { t } = useI18n();
-const menuVisible = ref(false);
+
+
 const menu = ref(null);
-
 onClickOutside(menu, (_) => menuVisible.value = false);
-
+const menuVisible = ref(false);
 function toggleMenu() {
     menuVisible.value = !menuVisible.value;
 }
+
+const store = useStore();
+const settings = computed(() => store.state.settings)
+
+const idleAppointments = computed(()=> store.getters.getIdleAppointmentsCount)
 
 </script>
 
@@ -317,6 +322,6 @@ function toggleMenu() {
 }
 
 #main-header:empty {
-    display: none
+    display: none;
 }
 </style>

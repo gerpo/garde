@@ -10,8 +10,14 @@ import { Getters, getters } from './getters'
 import { Mutations, mutations } from './mutations'
 import { State, state } from './state'
 
+import VuexPersistence from 'vuex-persist'
+
+const vuexLocal = new VuexPersistence<State>({
+    storage: window.localStorage
+})
+
 export const store = createStore<State>({
-    plugins: process.env.NODE_ENV === 'development' ? [createLogger()] : [],
+    plugins: process.env.NODE_ENV === 'development' ? [createLogger()] : [vuexLocal.plugin],
     state,
     mutations,
     actions,

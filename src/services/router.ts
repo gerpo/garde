@@ -8,10 +8,8 @@ import Navigation from '../components/Navigation.vue';
 import NotFound from '../components/NotFound.vue'
 import axios from '../utils/axios'
 import { useAuthState } from './isLoggedIn';
-import { useUser } from './useUser';
 
 const loggedInState = useAuthState()
-//const user = useUser();
 
 export enum RouteNames {
     Home = 'Home',
