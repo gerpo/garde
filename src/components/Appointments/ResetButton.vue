@@ -6,13 +6,13 @@
         :disabled="!ready || appointment.status === AppointmentStatus.idle"
     >
         <Spinner class="w-5 h-5 mx-auto animate-spin" v-if="!ready" />
-        <scale-icon class="w-5 h-5 fill-current" v-else />
+        <reply-icon class="w-5 h-5 fill-current" v-else />
     </button>
 </template>
 
 <script setup lang="ts">
 import Spinner from '../../assets/spinner.svg?component';
-import { ScaleIcon } from '@heroicons/vue/solid';
+import { ReplyIcon } from '@heroicons/vue/solid';
 
 import { useI18n } from 'vue-i18n';
 import { useStore } from '../../services/store/store';

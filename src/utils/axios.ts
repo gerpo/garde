@@ -1,9 +1,13 @@
-import { RouteNames } from '../services/router';
-import axios from 'axios';
-import router from '../services/router'
-import { useAuthState } from '../services/isLoggedIn';
+import axios, { AxiosError } from 'axios';
 
-const loggedInState = useAuthState()
+import { MutationType } from '../services/store/mutations';
+import { RouteNames } from '../services/router';
+import router from '../services/router'
+import { store } from '../services/store/store';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
+//const store = useStore();
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -14,10 +18,34 @@ axios.defaults.baseURL = 'http://localhost:8000';
 
 axios.interceptors.response.use(
     response => response,
-    error => {
-        const { status } = error.response;
+    (error: AxiosError) => {
+        if (!error.response) {
+            toast.error('There was a network error. Please try again later or conntact an admin.')
+        }
+        return Promise.reject(error);
+    }
+);
+
+axios.interceptors.response.use(response => response, async error => {
+    const { status } = error.response!;
+
+    if (status === 419) {
+        // Refresh our session token
+        await axios.get('/sanctum/csrf-cookie')
+
+        // Return a new request using the original request's configuration
+        return axios(error.response.config)
+    }
+
+    return Promise.reject(error)
+})
+
+axios.interceptors.response.use(
+    response => response,
+    (error: AxiosError) => {
+        const { status } = error.response!;
         if (status === 401) {
-            loggedInState.value = false;
+            store.commit(MutationType.SetLoginStatus, false)
             router.push({ name: RouteNames.Login })
         }
         return Promise.reject(error);
@@ -26,9 +54,11 @@ axios.interceptors.response.use(
 
 axios.interceptors.response.use(
     response => {
-        handleDates(response.data);
+        if (response && response.data)
+            handleDates(response.data);
         return response;
-    });
+    },
+    error => Promise.reject(error));
 const isoDateFormat = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
 
 function isIsoDateString(value: any): boolean {

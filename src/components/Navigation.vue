@@ -287,15 +287,16 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
-import { ref, computed } from 'vue';
-import { MenuSide } from '../models/UserSettings';
-import { LogoutIcon, CalendarIcon, MenuIcon } from '@heroicons/vue/solid';
-import { onClickOutside } from '@vueuse/core';
-import { useI18n } from 'vue-i18n';
-import { RouteNames } from '../services/router';
 import NavTag from './NavTag.vue';
+import { RouterLink } from 'vue-router';
+import { LogoutIcon, CalendarIcon, MenuIcon } from '@heroicons/vue/solid';
+
+import { useI18n } from 'vue-i18n';
+import { MenuSide } from '../models/UserSettings';
 import { useStore } from '../services/store/store';
+import { RouteNames } from '../services/router';
+import { ref, computed } from 'vue';
+import { onClickOutside } from '@vueuse/core';
 
 defineProps<{ currentComponent: any; }>();
 

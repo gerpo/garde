@@ -3,5 +3,6 @@
     "confirmAppointment": "Zusagen",
     "declineAppointment": "Absagen",
     "resetAppointment": "Nicht sicher",
+    "deleteAppointment": "Löschen",
     "noDescription": "Keine weitere Beschreibung"
 }

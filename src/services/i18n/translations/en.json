@@ -3,5 +3,6 @@
     "confirmAppointment": "Confirm",
     "declineAppointment": "Decline",
     "resetAppointment": "Not Sure",
+    "deleteAppointment": "Delete",
     "noDescription": "No description provided."
 }

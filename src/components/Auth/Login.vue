@@ -1,14 +1,23 @@
 <template>
   <div>
     <div>
-      <img
-        class="w-auto h-12 mx-auto"
-        src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-        alt="Workflow"
-      />
+      <Logo class="w-auto h-16 mx-auto" />
       <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900">Sign in to your account</h2>
     </div>
+
     <form class="mt-8 space-y-4" action="#" method="POST">
+      <div
+        v-if="loginErrors"
+        class="w-full p-2 mx-auto text-white bg-red-400 border-red-600 rounded"
+      >
+        <ul class="text-sm">
+          <li v-for="errors, field in loginErrors">
+            <ul>
+              <li v-for="error in errors">{{ error }}</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
       <input type="hidden" name="remember" value="true" />
       <div class="-space-y-px rounded-md shadow-sm">
         <div>
@@ -19,7 +28,9 @@
             type="email"
             autocomplete="email"
             required
+            v-model="email"
             class="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
+            :class="{ 'border-red-500': loginErrors?.email }"
             placeholder="Email address"
           />
         </div>
@@ -31,30 +42,21 @@
             type="password"
             autocomplete="current-password"
             required
-            class="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
-            :class="{ 'rounded-b-md': mode === MODES.Login }"
-            placeholder="Password"
-          />
-        </div>
-        <div v-if="mode === MODES.Register" class="overflow-hidden">
-          <label for="password" class="sr-only">Password</label>
-          <input
-            id="password-confirm"
-            name="password-confirm"
-            type="password"
-            required
+            v-model="password"
             class="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
-            :placeholder="mode === MODES.Register ? 'Confirm Password' : ''"
+            :class="{ 'border-red-500': loginErrors?.email }"
+            placeholder="Password"
           />
         </div>
       </div>
 
-      <div class="flex items-center justify-between" v-if="mode === MODES.Login">
+      <div class="flex items-center justify-between">
         <div class="flex items-center">
           <input
             id="remember-me"
             name="remember-me"
             type="checkbox"
+            v-model="remember"
             class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500"
           />
           <label for="remember-me" class="block ml-2 text-sm text-gray-900">Remember me</label>
@@ -68,8 +70,9 @@
       <div>
         <button
           type="submit"
-          class="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md group hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-          @click="logIn"
+          class="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md disabled:cursor-not-allowed disabled:bg-red-200 group hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          @click.prevent="logIn"
+          :disabled="!email || !password"
         >
           <span class="absolute inset-y-0 left-0 flex items-center pl-3">
             <lock-closed-icon
@@ -91,31 +94,20 @@ enum MODES {
 };
 </script>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { LockClosedIcon } from '@heroicons/vue/solid';
-import { useRouter, useRoute } from 'vue-router';
-import axios from '../../utils/axios';
-import { useToast } from "vue-toastification";
-import { useAuthState } from '../../services/isLoggedIn';
 import { useStore } from '../../services/store/store';
 import { ActionTypes } from '../../services/store/actions';
+import Logo from '../../assets/logo.svg?component';
 
-const router = useRouter();
 const store = useStore();
-const route = useRoute();
-const toast = useToast();
 
-const mode = ref(MODES.Login);
-const isLoggedIn = useAuthState()
+const loginErrors = computed(() => store.state.loginValidationErrors);
+const email = ref('');
+const password = ref('');
+const remember = ref(false);
 
 function logIn() {
-  axios.get('/sanctum/csrf-cookie').then(_ =>
-    axios.post('/login', { email: 'test@example.com', password: 'password' })
-      .then(_ => {
-        isLoggedIn.value = true;
-        router.push({ path: route.query.redirect?.toString() ?? '/' })
-        store.dispatch(ActionTypes.LoadUser)
-      }).catch(error => toast.error(error.message)));
-
+  store.dispatch(ActionTypes.Login, {email: email.value, password: password.value, remember: remember.value});
 }
 </script>

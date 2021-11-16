@@ -11,6 +11,7 @@ import { Mutations, mutations } from './mutations'
 import { State, state } from './state'
 
 import VuexPersistence from 'vuex-persist'
+import { appointmentModule } from './modules/appointments'
 
 const vuexLocal = new VuexPersistence<State>({
     storage: window.localStorage
@@ -21,7 +22,8 @@ export const store = createStore<State>({
     state,
     mutations,
     actions,
-    getters
+    getters,
+    modules: {appointmentModule}
 })
 
 export function useStore() {

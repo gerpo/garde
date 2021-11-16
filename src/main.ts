@@ -10,8 +10,8 @@ import router from './services/router'
 import { store } from './services/store/store';
 
 if (process.env.NODE_ENV === 'development') {
-    const { worker } = await import('./mocks/browser')
-    worker.start()
+    //    const { worker } = await import('./mocks/browser')
+    //    worker.start()
 }
 
 const locale = navigator.language.split('-')[0];
