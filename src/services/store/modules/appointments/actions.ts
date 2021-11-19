@@ -3,6 +3,7 @@ import { Appointment, AppointmentStatus, NewAppointment } from '../../../../mode
 import { AppointmentMutationType, AppointmentMutations } from './mutations'
 
 import { AppointmentState } from './state'
+import { State } from '../../state'
 import axios from '../../../../utils/axios'
 
 export enum AppointmentActionTypes {
@@ -15,7 +16,7 @@ export enum AppointmentActionTypes {
     DeleteAppointment = 'DELETE_APPOINTMENT',
 }
 
-type ActionAugments = Omit<ActionContext<AppointmentState, AppointmentState>, 'commit'> & {
+type ActionAugments = Omit<ActionContext<AppointmentState, State>, 'commit'> & {
     commit<K extends keyof AppointmentMutations>(
         key: K,
         payload: Parameters<AppointmentMutations[K]>[1]
@@ -32,7 +33,7 @@ export type AppointmentActions = {
     [AppointmentActionTypes.DeleteAppointment](context: ActionAugments, appointment: Appointment): void
 }
 
-export const appointmentActions: ActionTree<AppointmentState, AppointmentState> & AppointmentActions = {
+export const appointmentActions: ActionTree<AppointmentState, State> & AppointmentActions = {
     async[AppointmentActionTypes.LoadAppointments]({ commit }) {
         await axios.get<{ data: Appointment[] }>('/api/appointments')
             .then(response => commit(AppointmentMutationType.LoadAppointments, response.data.data))

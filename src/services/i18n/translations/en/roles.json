@@ -1,0 +1,15 @@
+{
+  "add_permissions": "Add Permissions",
+  "create_role": "Create New Role",
+  "create_role_btn": "Create",
+  "delete_role": "Delete Role",
+  "members_header": "Members",
+  "new_role_name": "New Role Name",
+  "no_member_role": "Role has no members, yet.",
+  "overview_headline": "Overview",
+  "permissions_header": "Permissions",
+  "remove_permissions": "Remove Permissions",
+  "role_detail_headline": "Role Details",
+  "roles_headline": "Roles",
+  "select_role": "Please select a role above."
+}

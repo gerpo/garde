@@ -27,10 +27,10 @@
 import { useI18n } from 'vue-i18n';
 import { useStore } from '../../services/store/store';
 import { Appointment } from '../../models/Appointment';
-import { ActionTypes } from '../../services/store/actions';
 import { createPopper, Instance } from '@popperjs/core';
 import { ref, onMounted, watch } from 'vue';
 import { onClickOutside } from '@vueuse/core';
+import { AppointmentActionTypes } from '../../services/store/modules/appointments/actions';
 
 const props = defineProps<{ appointment: Appointment }>();
 
@@ -56,7 +56,7 @@ function closeConfirmation() {
 onClickOutside(confirmation, closeConfirmation)
 
 function deleteAppointment() {
-    store.dispatch(ActionTypes.DeleteAppointment, props.appointment)
+    store.dispatch(AppointmentActionTypes.DeleteAppointment, props.appointment)
     closeConfirmation();
 }
 </script>

@@ -3,7 +3,8 @@ export interface User {
     email: string,
     firstName: string,
     lastName: string,
-    points: number, 
+    points: number,
+    isAdmin?: boolean,
     roles: Array<string>,
     permissions: Array<string>,
 }

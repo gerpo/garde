@@ -57,7 +57,7 @@
                                     <rect x="4" y="14" width="6" height="6" rx="1" />
                                     <rect x="14" y="14" width="6" height="6" rx="1" />
                                 </svg>
-                                <span class="ml-2 text-sm">Dashboard</span>
+                                <span class="ml-2 text-sm">{{ t('navigation.home') }}</span>
                             </div>
                         </router-link>
                         <div
@@ -94,15 +94,27 @@
                         >8</div>
                     </li>
                     <li
+                        v-if="userCanAny([Rights.AppointmentsView, Rights.AppointmentsViewAny])"
                         class="flex items-center justify-between w-full mb-6 text-gray-600 cursor-pointer hover:text-gray-500"
                     >
                         <router-link :to="{ name: RouteNames.Appointments }">
                             <div class="flex items-center">
                                 <calendar-icon class="w-5 h-5" />
-                                <span class="ml-2 text-sm">{{ t('appointments') }}</span>
+                                <span class="ml-2 text-sm">{{ t('navigation.appointments') }}</span>
                             </div>
                         </router-link>
                         <nav-tag :count="idleAppointments" v-if="idleAppointments" />
+                    </li>
+                    <li
+                        v-if="userCan(Rights.RolesView)"
+                        class="flex items-center justify-between w-full mb-6 text-gray-600 cursor-pointer hover:text-gray-500"
+                    >
+                        <router-link :to="{ name: RouteNames.Roles }">
+                            <div class="flex items-center">
+                                <lock-open-icon class="w-5 h-5" />
+                                <span class="ml-2 text-sm">{{ t('navigation.roles') }}</span>
+                            </div>
+                        </router-link>
                     </li>
                     <li
                         class="flex items-center justify-between w-full mb-6 text-gray-600 cursor-pointer hover:text-gray-500"
@@ -289,9 +301,10 @@
 <script setup lang="ts">
 import NavTag from './NavTag.vue';
 import { RouterLink } from 'vue-router';
-import { LogoutIcon, CalendarIcon, MenuIcon } from '@heroicons/vue/solid';
+import { LogoutIcon, CalendarIcon, MenuIcon, LockOpenIcon } from '@heroicons/vue/solid';
 
 import { useI18n } from 'vue-i18n';
+import { Rights } from '../models/Rights';
 import { MenuSide } from '../models/UserSettings';
 import { useStore } from '../services/store/store';
 import { RouteNames } from '../services/router';
@@ -313,7 +326,10 @@ function toggleMenu() {
 const store = useStore();
 const settings = computed(() => store.state.settings)
 
-const idleAppointments = computed(()=> store.getters.getIdleAppointmentsCount)
+const idleAppointments = computed(() => store.getters.getIdleAppointmentsCount)
+const userCan = computed(() => store.getters.userCan);
+const userCanAny = computed(() => store.getters.userCanAny);
+
 
 </script>
 

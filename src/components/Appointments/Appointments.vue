@@ -90,6 +90,7 @@ import { Appointment } from '../../models/Appointment';
 import { ActionTypes } from '../../services/store/actions';
 import { useRoute, useRouter } from 'vue-router';
 import { ref, watch, onMounted, computed } from 'vue';
+import { AppointmentActionTypes } from '../../services/store/modules/appointments/actions';
 
 
 const selectedAppointment = ref<Appointment | null>(null);
@@ -99,7 +100,7 @@ const store = useStore();
 
 const selectedViewMode = ref(store.state.settings.appointmentViewMode);
 
-const appointments = computed(() => store.state.appointments)
+const appointments = computed(() => store.state.appointmentModule.appointments)
 
 const createModalVisible = ref(false);
 
@@ -113,8 +114,8 @@ watch(() => detailModalVisible.value, (value) => {
     if (!value) router.replace({ name: RouteNames.Appointments })
 })
 
-onMounted(async () => {
-    store.dispatch(ActionTypes.LoadAppointments);
+onMounted(() => {
+    store.dispatch(AppointmentActionTypes.LoadAppointments);
     if (params.id) {
         const it = (appointments.value as Appointment[])?.find(item => item.id === parseInt(params.id as string));
         if (it !== undefined) showAppointmentDetails(it);

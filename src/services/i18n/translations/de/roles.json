@@ -1,0 +1,15 @@
+{
+  "add_permissions": "Rechte hinzufügen",
+  "create_role": "Gruppe erstellen",
+  "create_role_btn": "Erstellen",
+  "delete_role": "Gruppe löschen",
+  "members_header": "Mitglieder",
+  "new_role_name": "Neuer Gruppenname",
+  "no_member_role": "Gruppe hat keine Mitglieder, bisher.",
+  "overview_headline": "Übersicht",
+  "permissions_header": "Rechte",
+  "remove_permissions": "Rechte entfernen",
+  "role_detail_headline": "Gruppen Details",
+  "roles_headline": "Gruppen",
+  "select_role": "Bitten wähle oben eine Gruppe aus."
+}

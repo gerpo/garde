@@ -73,7 +73,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { NewAppointment } from '../../models/Appointment';
-import { ActionTypes } from '../../services/store/actions';
+import { AppointmentActionTypes } from '../../services/store/modules/appointments/actions';
 import { useStore } from '../../services/store/store';
 
 const store = useStore()
@@ -83,6 +83,6 @@ const deadline = ref('')
 const newAppointment = reactive({} as NewAppointment);
 
 function createAppointment() {
-    store.dispatch(ActionTypes.CreateAppointment, newAppointment)
+    store.dispatch(AppointmentActionTypes.CreateAppointment, newAppointment)
 }
 </script>

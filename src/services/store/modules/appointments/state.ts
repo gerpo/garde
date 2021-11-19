@@ -6,5 +6,4 @@ export type AppointmentState = {
 
 export const appointmentState : AppointmentState = {
     appointments:  undefined
-
 }

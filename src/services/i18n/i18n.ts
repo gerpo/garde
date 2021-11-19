@@ -1,7 +1,8 @@
-import { nextTick, WritableComputedRef } from 'vue';
-import { createI18n, I18n, I18nOptions } from 'vue-i18n';
-import en_messages from './translations/en.json';
-import de_messages from './translations/de.json';
+import { I18n, I18nOptions, createI18n } from 'vue-i18n';
+import { WritableComputedRef, nextTick } from 'vue';
+
+import de_messages from './translations/de/de';
+import en_messages from './translations/en/en';
 
 export const SUPPORT_LOCALES = ['en', 'de'];
 
@@ -23,11 +24,8 @@ export function setI18nLanguage(i18n: I18n, locale: string) {
 }
 
 export async function loadLocaleMessages(i18n: I18n, locale: string) {
-    const messages = await import(
-    /* webpackChunkName: "locale-[request]" */ `./translations/${locale}.json`
-    );
 
-    i18n.global.setLocaleMessage(locale, messages.default);
+    i18n.global.setLocaleMessage(locale, de_messages);
 
     return nextTick();
 }

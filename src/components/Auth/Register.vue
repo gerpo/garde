@@ -11,12 +11,10 @@
                 v-if="registerErrors"
                 class="w-full p-2 mx-auto text-white bg-red-400 border-red-600 rounded"
             >
-                <ul class="text-sm">
-                    <li v-for="errors, field in registerErrors">
-                        <ul>
-                            <li v-for="error in errors">{{ error }}</li>
-                        </ul>
-                    </li>
+                <ul class="text-sm list-disc list-inside">
+                    <template v-for="errors, field in registerErrors">
+                        <li v-for="error in errors">{{ error }}</li>
+                    </template>
                 </ul>
             </div>
             <input type="hidden" name="remember" value="true" />
@@ -106,7 +104,7 @@ import Logo from '../../assets/logo.svg?component';
 
 const store = useStore();
 
-const registerErrors = computed(() => store.state.loginValidationErrors);
+const registerErrors = computed(() => store.state.registerValidationErrors);
 const email = ref('');
 const password = ref('');
 const passwordConfirm = ref('')

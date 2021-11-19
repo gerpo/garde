@@ -12,6 +12,7 @@ import { State, state } from './state'
 
 import VuexPersistence from 'vuex-persist'
 import { appointmentModule } from './modules/appointments'
+import { roleModule } from './modules/roles'
 
 const vuexLocal = new VuexPersistence<State>({
     storage: window.localStorage
@@ -23,7 +24,7 @@ export const store = createStore<State>({
     mutations,
     actions,
     getters,
-    modules: {appointmentModule}
+    modules: { appointmentModule, roleModule }
 })
 
 export function useStore() {
@@ -32,19 +33,13 @@ export function useStore() {
 
 export type Store = Omit<
     VuexStore<State>,
-    'getters' | 'commit' | 'dispatch'
+    'getters' | 'commit'
 > & {
     commit<K extends keyof Mutations, P extends Parameters<Mutations[K]>[1]>(
         key: K,
         payload: P,
         options?: CommitOptions
     ): ReturnType<Mutations[K]>
-} & {
-    dispatch<K extends keyof Actions>(
-        key: K,
-        payload?: Parameters<Actions[K]>[1],
-        options?: DispatchOptions
-    ): ReturnType<Actions[K]>
 } & {
     getters: {
         [K in keyof Getters]: ReturnType<Getters[K]>

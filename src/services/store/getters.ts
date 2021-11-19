@@ -1,14 +1,11 @@
-import { Appointment, AppointmentStatus } from '../../models/Appointment';
-
 import { GetterTree } from 'vuex'
+import { Rights } from '../../models/Rights';
 import { State } from './state'
-import { groupByMonth } from '../../utils/helpers';
 
 export type Getters = {
     getPermissions(state: State): string[] | undefined
-
-    getIdleAppointmentsCount(state: State): number
-    getOrderedAppointments(state: State): { [key: string]: Appointment[] } | undefined
+    userCan(state: State): (permission:Rights) => boolean
+    userCanAny(state: State, getters: any): (permissions:Rights[]) => boolean
 }
 
 export const getters: GetterTree<State, State> & Getters = {
@@ -16,11 +13,13 @@ export const getters: GetterTree<State, State> & Getters = {
         return state.user?.permissions;
     },
 
-    getIdleAppointmentsCount(state) {
-        return state.appointments?.filter(appointment => appointment.status === AppointmentStatus.idle).length || 0
+    userCan: (state) => (permission: Rights) => {
+        if (state.user?.isAdmin) return true;
+
+        return state.user?.permissions.includes(permission) ?? false
     },
-    getOrderedAppointments(state) {
-        if (!state.appointments) return state.appointments
-        return groupByMonth(state.appointments, 'datetime')
-    }
+
+    userCanAny: (state, getters) => (permissions: Rights[]) => {
+        return permissions.some(permission => getters.userCan(permission))
+    },
 }

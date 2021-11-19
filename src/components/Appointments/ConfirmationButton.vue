@@ -15,9 +15,9 @@ import Spinner from '../../assets/spinner.svg?component';
 
 import { useI18n } from 'vue-i18n';
 import { useStore } from '../../services/store/store';
-import { ActionTypes } from '../../services/store/actions';
 import { useTimeout } from '@vueuse/core';
 import { Appointment, AppointmentStatus } from '../../models/Appointment';
+import { AppointmentActionTypes } from '../../services/store/modules/appointments/actions';
 
 const props = defineProps<{ appointment: Appointment }>()
 
@@ -28,6 +28,6 @@ const { ready, start } = useTimeout(300, { controls: true, immediate: false })
 
 function confirm() {
     start()
-    store.dispatch(ActionTypes.ConfirmAppointment, props.appointment);
+    store.dispatch(AppointmentActionTypes.ConfirmAppointment, props.appointment);
 }
 </script>

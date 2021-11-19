@@ -17,8 +17,8 @@ import { ReplyIcon } from '@heroicons/vue/solid';
 import { useI18n } from 'vue-i18n';
 import { useStore } from '../../services/store/store';
 import { useTimeout } from '@vueuse/core';
-import { ActionTypes } from '../../services/store/actions';
 import { Appointment, AppointmentStatus } from '../../models/Appointment';
+import { AppointmentActionTypes } from '../../services/store/modules/appointments/actions';
 
 const props = defineProps<{ appointment: Appointment }>()
 
@@ -29,6 +29,6 @@ const { ready, start } = useTimeout(300, { controls: true, immediate: false })
 
 function reset() {
     start()
-    store.dispatch(ActionTypes.IdleAppointment, props.appointment);
+    store.dispatch(AppointmentActionTypes.IdleAppointment, props.appointment);
 }
 </script>

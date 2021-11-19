@@ -17,8 +17,8 @@ import { BanIcon } from '@heroicons/vue/solid';
 import { useI18n } from 'vue-i18n';
 import { useStore } from '../../services/store/store';
 import { useTimeout } from '@vueuse/core';
-import { ActionTypes } from '../../services/store/actions';
 import { Appointment, AppointmentStatus } from '../../models/Appointment';
+import { AppointmentActionTypes } from '../../services/store/modules/appointments/actions';
 
 const props = defineProps<{ appointment: Appointment }>()
 
@@ -28,6 +28,6 @@ const { ready, start } = useTimeout(300, { controls: true, immediate: false })
 
 function decline() {
     start()
-    store.dispatch(ActionTypes.DeclineAppointment, props.appointment);
+    store.dispatch(AppointmentActionTypes.DeclineAppointment, props.appointment);
 }
 </script>

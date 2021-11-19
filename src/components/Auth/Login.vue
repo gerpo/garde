@@ -11,11 +11,9 @@
         class="w-full p-2 mx-auto text-white bg-red-400 border-red-600 rounded"
       >
         <ul class="text-sm">
-          <li v-for="errors, field in loginErrors">
-            <ul>
-              <li v-for="error in errors">{{ error }}</li>
-            </ul>
-          </li>
+          <template v-for="errors, field in loginErrors">
+            <li v-for="error in errors">{{ error }}</li>
+          </template>
         </ul>
       </div>
       <input type="hidden" name="remember" value="true" />
