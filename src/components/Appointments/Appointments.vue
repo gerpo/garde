@@ -115,7 +115,6 @@ watch(() => detailModalVisible.value, (value) => {
 })
 
 onMounted(() => {
-    store.dispatch(AppointmentActionTypes.LoadAppointments);
     if (params.id) {
         const it = (appointments.value as Appointment[])?.find(item => item.id === parseInt(params.id as string));
         if (it !== undefined) showAppointmentDetails(it);

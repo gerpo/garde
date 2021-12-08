@@ -12,6 +12,7 @@ import { State, state } from './state'
 
 import VuexPersistence from 'vuex-persist'
 import { appointmentModule } from './modules/appointments'
+import { registerCodesModule } from './modules/register-codes'
 import { roleModule } from './modules/roles'
 
 const vuexLocal = new VuexPersistence<State>({
@@ -24,7 +25,7 @@ export const store = createStore<State>({
     mutations,
     actions,
     getters,
-    modules: { appointmentModule, roleModule }
+    modules: { appointmentModule, roleModule, registerCodesModule }
 })
 
 export function useStore() {

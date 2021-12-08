@@ -1,7 +1,7 @@
 import { RouteLocationNormalized, RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
 
 import { ActionTypes } from './store/actions';
-import Administration from '../components/Roles/Roles.vue';
+import { AppointmentActionTypes } from './store/modules/appointments/actions';
 import Appointments from '../components/Appointments/Appointments.vue';
 import Auth from '../components/Auth/Auth.vue';
 import Forbidden from '../components/Forbidden.vue'
@@ -9,23 +9,22 @@ import HelloWorld from '../components/HelloWorld.vue';
 import Home from '../components/Home.vue';
 import Navigation from '../components/Navigation.vue';
 import NotFound from '../components/NotFound.vue'
+import Profile from '../components/Profile.vue';
+import RegisterCodes from '../components/RegisterCodes/RegisterCodes.vue'
+import { RegisterCodesActionTypes } from './store/modules/register-codes/actions';
 import { Rights } from '../models/Rights';
+import Roles from '../components/Roles/Roles.vue';
 import { store } from '../services/store/store';
-
-declare module 'vue-router' {
-    interface RouteMeta {
-        // is optional
-        permissions?: Rights[]
-    }
-}
 
 export enum RouteNames {
     Home = 'Home',
     Login = 'Login',
     Logout = 'Logout',
+    Profile = 'Profile',
     Appointments = 'Appointments',
     ShowAppointment = 'Appointments.show',
     Roles = 'Roles',
+    RegisterCodes = 'RegisterCodes',
     NotFound = 'NotFound',
     Forbidden = 'Forbidden',
 }
@@ -58,25 +57,47 @@ const routes: RouteRecordRaw[] = [
         props: { currentComponent: HelloWorld },
     },
     {
+        path: "/profile",
+        name: "Profile",
+        component: Navigation,
+        props: { currentComponent: Profile },
+    },
+    {
         path: "/appointments/:id",
         name: RouteNames.ShowAppointment,
         component: Navigation,
         props: { currentComponent: Appointments },
-        meta: { permissions: [Rights.AppointmentsView, Rights.AppointmentsViewAny] }
+        meta: { permissions: [Rights.AppointmentsView, Rights.AppointmentsViewAny] },
+        beforeEnter: () => {
+            store.dispatch(AppointmentActionTypes.LoadAppointments)
+        }
     },
     {
         path: "/appointments",
         name: RouteNames.Appointments,
         component: Navigation,
         props: { currentComponent: Appointments },
-        meta: { permissions: [Rights.AppointmentsView, Rights.AppointmentsViewAny] }
+        meta: { permissions: [Rights.AppointmentsView, Rights.AppointmentsViewAny] },
+        beforeEnter: () => {
+            store.dispatch(AppointmentActionTypes.LoadAppointments)
+        }
     },
     {
         path: "/roles",
         name: RouteNames.Roles,
         component: Navigation,
-        props: { currentComponent: Administration },
-        meta: { permissions: [Rights.RolesView] }
+        props: { currentComponent: Roles },
+        meta: { permissions: [Rights.RolesViewAny] },
+    },
+    {
+        path: "/register-codes",
+        name: RouteNames.RegisterCodes,
+        component: Navigation,
+        props: { currentComponent: RegisterCodes },
+        meta: { permissions: [Rights.RegisterCodesViewAny] },
+        beforeEnter: () => {
+            store.dispatch(RegisterCodesActionTypes.LoadRegisterCodes)
+        },
     },
     {
         path: "/:catchAll(.*)",

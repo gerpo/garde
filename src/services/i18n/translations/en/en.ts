@@ -1,6 +1,7 @@
-import navigation from './navigation.json'
-import roles from './roles.json'
-import user from './user.json'
+import navigation from './navigation.json';
+import registerCodes from './registerCodes.json';
+import roles from './roles.json';
+import user from './user.json';
 
 export default {
     "confirmAppointment": "Confirm",
@@ -12,4 +13,5 @@ export default {
     user,
     navigation,
     roles,
+    registerCodes
 }

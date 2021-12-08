@@ -2,9 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-primary: #ee2c27;
+  --color-secondary: #ecc94b;
+  --primary-color: var(var(--color-primary)) !important;
+}
+
 html,
 body,
 #app
 {
     @apply h-full;
+}
+
+.p-datatable .p-datatable-tbody > tr{
+    @apply text-black !important;
+}
+.p-datatable .p-datatable-thead > tr > th
+{
+    @apply bg-gray-100 !important;
+    @apply text-black !important;
+}
+
+.p-column-title {
+    @apply text-black;
 }

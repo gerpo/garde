@@ -1,0 +1,16 @@
+{
+  "add_roles": "Gruppen hinzufügen",
+  "add_roles_btn": "Hinzüfügen",
+  "code_details_headline": "Code Details",
+  "code_header": "Code",
+  "create_code": "Neuen Code erstellen",
+  "delete_code": "Code löschen",
+  "no_current_codes": "Keine aktiven Registrierungscodes.",
+  "no_roles_assigned": "Code hat keine Gruppen zugewiesen.",
+  "overview_headline": "Übersicht",
+  "register_codes_headline": "Registrierungscodes",
+  "remove_roles": "Gruppen entfernen",
+  "role_name": "Name",
+  "roles_headline": "Gruppen",
+  "select_code": "Bitte wähle oben einen Code aus."
+}

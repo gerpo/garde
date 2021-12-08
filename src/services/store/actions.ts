@@ -12,6 +12,8 @@ export enum ActionTypes {
     Logout = 'LOGOUT',
     RegisterUser = 'REGISTER_USER',
     LoadUser = 'LOAD_USER',
+    UpdateProfile = 'UPDATE_PROFILE',
+    UpdatePassword = 'UPDATE_PASSWORD',
 }
 
 type ActionAugments = Omit<ActionContext<State, State>, 'commit'> & {
@@ -25,6 +27,8 @@ export type Actions = {
     [ActionTypes.Logout](context: ActionAugments): void
     [ActionTypes.RegisterUser](context: ActionAugments, data: { email: string, password: string, 'password_confirmation': string, code: string }): void
     [ActionTypes.LoadUser](context: ActionAugments): void,
+    [ActionTypes.UpdateProfile](context: ActionAugments, user: User): void,
+    [ActionTypes.UpdatePassword](context: ActionAugments, user: User): void,
 }
 
 const toast = useToast();
@@ -96,6 +100,12 @@ export const actions: ActionTree<State, State> & Actions = {
     },
 
     async[ActionTypes.LoadUser]({ commit }) {
-        await axios.get<{ data: User }>('/api/user').then(response => commit(MutationType.LoadUser, response.data.data))
+        await axios.get<{ data: User }>('/api/profile').then(response => commit(MutationType.LoadUser, response.data.data))
+    },
+    async[ActionTypes.UpdateProfile]({ commit }, user) {
+        await axios.put<{ data: User }>(`/user/profile-information`, user).then(response => commit(MutationType.LoadUser, response.data.data))
+    },
+    async[ActionTypes.UpdatePassword]({ commit }, user) {
+        await axios.put<{ data: User }>(`/user/password`, user).then(response => commit(MutationType.LoadUser, response.data.data))
     },
 }

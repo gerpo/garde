@@ -1,15 +1,21 @@
 {
   "add_permissions": "Rechte hinzufügen",
+  "add_permissions_btn": "",
+  "add_users": "Mitglieder hinzufügen",
+  "add_users_btn": "Hinzufügen",
   "create_role": "Gruppe erstellen",
   "create_role_btn": "Erstellen",
   "delete_role": "Gruppe löschen",
   "members_header": "Mitglieder",
   "new_role_name": "Neuer Gruppenname",
   "no_member_role": "Gruppe hat keine Mitglieder, bisher.",
+  "no_permissions_role": "Gruppe hat keine Rechte.",
   "overview_headline": "Übersicht",
+  "permission_name": "Name",
   "permissions_header": "Rechte",
   "remove_permissions": "Rechte entfernen",
+  "remove_users": "Mitglieder entfernen",
   "role_detail_headline": "Gruppen Details",
   "roles_headline": "Gruppen",
-  "select_role": "Bitten wähle oben eine Gruppe aus."
+  "select_role": "Bitte wähle oben eine Gruppe aus."
 }

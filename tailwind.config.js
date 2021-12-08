@@ -1,13 +1,28 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   mode: 'jit',
   purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx,svg}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    colors: {
+      primary: 'var(--color-primary)',
+      secondary: 'var(--color-secondary)',
+      
+      transparent: 'transparent',
+      current: 'currentColor',
+      black: '#212427',
+      white: colors.white,
+      gray: colors.trueGray,
+      red: colors.red,
+      green: colors.green,
+      muted: '#A3A3A3'
+    },
     extend: {
+      
       fontFamily: {
-        'sans': ['Inter', ...defaultTheme.fontFamily.sans],
+        'sans': ['"M PLUS 2"','Inter', ...defaultTheme.fontFamily.sans],
       },
       animation: {
         'float': 'wiggle 5s linear infinite',

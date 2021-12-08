@@ -1,5 +1,6 @@
 {
-    "home": "Home",
-    "appointments": "Termine",
-    "roles": "Guppen & Rechte"
+  "appointments": "Termine",
+  "home": "Home",
+  "register_codes": "Registrierungscodes",
+  "roles": "Guppen & Rechte"
 }

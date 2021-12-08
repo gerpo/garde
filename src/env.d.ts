@@ -1,7 +1,5 @@
 /// <reference types="vite/client" />
 /// <reference types="vite-svg-loader" />
-import { ComponentCustomProperties } from 'vue';
-import { Rights } from './models/Rights';
 
 declare module '*.vue' {
   import { DefineComponent } from 'vue'
@@ -10,9 +8,3 @@ declare module '*.vue' {
   export default component
 }
 
-declare module '@vue/runtime-core' {
-  interface ComponentCustomProperties {
-    $can: (permission: Rights) => boolean;
-    $canAny: (permissions: Rights[]) => boolean;
-  }
-}

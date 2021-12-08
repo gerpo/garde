@@ -1,0 +1,16 @@
+{
+  "add_roles": "Add Roles",
+  "add_roles_btn": "Add",
+  "code_details_headline": "Code Details",
+  "code_header": "Code",
+  "create_code": "Create New Code",
+  "delete_code": "Delete Code",
+  "no_current_codes": "There are no active register codes.",
+  "no_roles_assigned": "Register code has no roles assigned.",
+  "overview_headline": "Overview",
+  "register_codes_headline": "Register Codes",
+  "remove_roles": "Remove Roles",
+  "role_name": "Name",
+  "roles_headline": "Roles",
+  "select_code": "Please select a code above."
+}

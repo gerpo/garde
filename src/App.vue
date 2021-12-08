@@ -27,7 +27,7 @@ watch(user, value => {
   if (!value) {
     store.dispatch(ActionTypes.LoadUser);
   }
-},{immediate: true})
+}, { immediate: true })
 </script>
 
 <style>
