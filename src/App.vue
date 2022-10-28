@@ -30,5 +30,3 @@ watch(user, value => {
 }, { immediate: true })
 </script>
 
-<style>
-</style>
