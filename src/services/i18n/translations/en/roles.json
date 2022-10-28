@@ -1,0 +1,21 @@
+{
+  "add_permissions": "Add Permissions",
+  "add_permissions_btn": "Add",
+  "add_users": "Add Users",
+  "add_users_btn": "Add",
+  "create_role": "Create New Role",
+  "create_role_btn": "Create",
+  "delete_role": "Delete Role",
+  "members_header": "Members",
+  "new_role_name": "New Role Name",
+  "no_member_role": "Role has no members, yet.",
+  "no_permissions_role": "Role has no permissions.",
+  "overview_headline": "Overview",
+  "permission_name": "Name",
+  "permissions_header": "Permissions",
+  "remove_permissions": "Remove Permissions",
+  "remove_users": "Remove Users",
+  "role_detail_headline": "Role Details",
+  "roles_headline": "Roles",
+  "select_role": "Please select a role above."
+}

@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import { defineConfig } from 'vite'
 import svgLoader from 'vite-svg-loader'
 import vue from '@vitejs/plugin-vue'
 
@@ -10,7 +10,7 @@ export default defineConfig({
     svgLoader(),
     VitePWA({
       mode: 'development',
-      srcDir: 'src',
+      srcDir: 'src/utils',
       filename: 'sw.ts',
       base: '/',
       strategies: 'injectManifest',

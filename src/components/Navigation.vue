@@ -35,7 +35,7 @@
                 </div>
                 <ul class="mt-8">
                     <li
-                        class="flex items-center justify-between w-full mb-6 text-gray-600 cursor-pointer hover:text-gray-500"
+                        class="flex items-center justify-between w-full mb-6 text-gray-400 cursor-pointer hover:text-white "
                     >
                         <router-link :to="{ name: RouteNames.Home }">
                             <div class="flex items-center">
@@ -57,15 +57,15 @@
                                     <rect x="4" y="14" width="6" height="6" rx="1" />
                                     <rect x="14" y="14" width="6" height="6" rx="1" />
                                 </svg>
-                                <span class="ml-2 text-sm">Dashboard</span>
+                                <span class="ml-2 text-sm">{{ t('navigation.home') }}</span>
                             </div>
                         </router-link>
                         <div
-                            class="flex items-center justify-center px-3 py-1 text-xs text-gray-500 bg-gray-700 rounded"
+                            class="flex items-center justify-center px-3 py-1 text-xs text-white bg-gray-700 rounded"
                         >5</div>
                     </li>
                     <li
-                        class="flex items-center justify-between w-full mb-6 text-gray-600 cursor-pointer hover:text-gray-500"
+                        class="flex items-center justify-between w-full mb-6 text-gray-400 cursor-pointer hover:text-white"
                     >
                         <router-link to="/about">
                             <div class="flex items-center">
@@ -90,150 +90,59 @@
                             </div>
                         </router-link>
                         <div
-                            class="flex items-center justify-center px-3 py-1 text-xs text-gray-500 bg-gray-700 rounded"
+                            class="flex items-center justify-center px-3 py-1 text-xs text-gray-400 bg-gray-700 rounded"
                         >8</div>
                     </li>
                     <li
-                        class="flex items-center justify-between w-full mb-6 text-gray-600 cursor-pointer hover:text-gray-500"
+                        v-if="userCanAny([Rights.AppointmentsView, Rights.AppointmentsViewAny])"
+                        class="flex items-center justify-between w-full mb-6 text-gray-400 cursor-pointer hover:text-white"
                     >
                         <router-link :to="{ name: RouteNames.Appointments }">
                             <div class="flex items-center">
                                 <calendar-icon class="w-5 h-5" />
-                                <span class="ml-2 text-sm">{{ t('appointments') }}</span>
+                                <span class="ml-2 text-sm">{{ t('navigation.appointments') }}</span>
                             </div>
                         </router-link>
-                        <nav-tag :count="12" />
+                        <nav-tag :count="idleAppointments" v-if="idleAppointments" />
                     </li>
                     <li
-                        class="flex items-center justify-between w-full mb-6 text-gray-600 cursor-pointer hover:text-gray-500"
+                        v-if="userCan(Rights.RolesViewAny)"
+                        class="flex items-center justify-between w-full mb-6 text-gray-400 cursor-pointer hover:text-white"
                     >
-                        <div class="flex items-center">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="icon icon-tabler icon-tabler-code"
-                                width="20"
-                                height="20"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path stroke="none" d="M0 0h24v24H0z" />
-                                <polyline points="7 8 3 12 7 16" />
-                                <polyline points="17 8 21 12 17 16" />
-                                <line x1="14" y1="4" x2="10" y2="20" />
-                            </svg>
-                            <span class="ml-2 text-sm">Deliverables</span>
-                        </div>
+                        <router-link :to="{ name: RouteNames.Roles }">
+                            <div class="flex items-center">
+                                <lock-open-icon class="w-5 h-5" />
+                                <span class="ml-2 text-sm">{{ t('navigation.roles') }}</span>
+                            </div>
+                        </router-link>
                     </li>
                     <li
-                        class="flex items-center justify-between w-full mb-6 text-gray-600 cursor-pointer hover:text-gray-500"
+                        v-if="userCan(Rights.RegisterCodesViewAny)"
+                        class="flex items-center justify-between w-full mb-6 text-gray-400 cursor-pointer hover:text-white"
                     >
-                        <div class="flex items-center">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="icon icon-tabler icon-tabler-puzzle"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path stroke="none" d="M0 0h24v24H0z" />
-                                <path
-                                    d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1"
-                                />
-                            </svg>
-                            <span class="ml-2 text-sm">Invoices</span>
-                        </div>
-                        <div
-                            class="flex items-center justify-center px-3 py-1 text-xs text-gray-500 bg-gray-700 rounded"
-                        >25</div>
+                        <router-link :to="{ name: RouteNames.RegisterCodes }">
+                            <div class="flex items-center">
+                                <hashtag-icon class="w-5 h-5" />
+                                <span class="ml-2 text-sm">{{ $t('navigation.register_codes') }}</span>
+                            </div>
+                        </router-link>
                     </li>
-                    <li
-                        class="flex items-center justify-between w-full mb-6 text-gray-600 cursor-pointer hover:text-gray-500"
-                    >
-                        <div class="flex items-center">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="icon icon-tabler icon-tabler-stack"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path stroke="none" d="M0 0h24v24H0z" />
-                                <polyline points="12 4 4 8 12 12 20 8 12 4" />
-                                <polyline points="4 12 12 16 20 12" />
-                                <polyline points="4 16 12 20 20 16" />
-                            </svg>
-                            <span class="ml-2 text-sm">Inventory</span>
-                        </div>
-                    </li>
-                    <li
-                        class="flex items-center justify-between w-full text-gray-600 cursor-pointer hover:text-gray-500"
-                    >
-                        <div class="flex items-center">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="icon icon-tabler icon-tabler-settings"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path stroke="none" d="M0 0h24v24H0z" />
-                                <path
-                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                                />
-                                <circle cx="12" cy="12" r="3" />
-                            </svg>
-                            <span class="ml-2 text-sm">Settings</span>
-                        </div>
-                    </li>
+                    
                 </ul>
             </div>
             <div class="px-8 border-t border-gray-700">
                 <ul class="flex items-center justify-between w-full bg-gray-800">
-                    <li class="pt-5 pb-3 text-white" title="Logout">
+                    <li class="pt-5 pb-3 text-gray-400" title="Logout" :title="RouteNames.Logout">
                         <router-link :to="{ name: 'Logout' }">
                             <logout-icon class="w-5 h-5 fill-current"></logout-icon>
                         </router-link>
                     </li>
-                    <li class="pt-5 pb-3 text-white cursor-pointer">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="icon icon-tabler icon-tabler-messages"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path stroke="none" d="M0 0h24v24H0z" />
-                            <path
-                                d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10"
-                            />
-                            <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
-                        </svg>
+                    <li class="pt-5 pb-3 text-gray-400 cursor-pointer hover:text-white">
+                        <router-link :to="{ name: RouteNames.Profile }" :title="RouteNames.Profile">
+                            <user-icon class="w-5 h-5 fill-current"></user-icon>
+                        </router-link>
                     </li>
-                    <li class="pt-5 pb-3 text-white cursor-pointer">
+                    <li class="pt-5 pb-3 text-gray-400 cursor-pointer hover:text-white">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             class="icon icon-tabler icon-tabler-settings"
@@ -253,7 +162,7 @@
                             <circle cx="12" cy="12" r="3" />
                         </svg>
                     </li>
-                    <li class="pt-5 pb-3 text-white cursor-pointer">
+                    <li class="pt-5 pb-3 text-gray-400 cursor-pointer hover:text-white">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             class="icon icon-tabler icon-tabler-archive"
@@ -276,7 +185,7 @@
             </div>
         </div>
         <!-- Sidebar ends -->
-        
+
         <div class="container mx-auto sm:py-10">
             <div id="main-header" class="p-2 mb-2 bg-white rounded"></div>
             <div class="w-full h-full px-4 py-5 bg-white rounded sm:px-6">
@@ -287,36 +196,46 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
-import { inject, ref } from 'vue';
-import { UserSettings, MenuSide } from '../models/UserSettings';
-import { LogoutIcon, CalendarIcon, MenuIcon } from '@heroicons/vue/solid';
-import { onClickOutside } from '@vueuse/core';
-import { useI18n } from 'vue-i18n';
-import { RouteNames } from '../services/router';
 import NavTag from './NavTag.vue';
+import { RouterLink } from 'vue-router';
+import { LogoutIcon, CalendarIcon, MenuIcon, LockOpenIcon, HashtagIcon, UserIcon } from '@heroicons/vue/solid';
+
+import { useI18n } from 'vue-i18n';
+import { Rights } from '../models/Rights';
+import { MenuSide } from '../models/UserSettings';
+import { useStore } from '../services/store/store';
+import { RouteNames } from '../services/router';
+import { ref, computed } from 'vue';
+import { onClickOutside } from '@vueuse/core';
 
 defineProps<{ currentComponent: any; }>();
 
-const settings = inject('settings') as UserSettings;
 const { t } = useI18n();
-const menuVisible = ref(false);
+
+
 const menu = ref(null);
-
 onClickOutside(menu, (_) => menuVisible.value = false);
-
+const menuVisible = ref(false);
 function toggleMenu() {
     menuVisible.value = !menuVisible.value;
 }
+
+const store = useStore();
+const settings = computed(() => store.state.settings)
+
+const idleAppointments = computed(() => store.getters.getIdleAppointmentsCount)
+const userCan = computed(() => store.getters.userCan);
+const userCanAny = computed(() => store.getters.userCanAny);
+
 
 </script>
 
 <style lang="postcss">
 .router-link-exact-active {
-    @apply text-gray-300;
+    @apply text-white;
 }
 
 #main-header:empty {
-    display: none
+    display: none;
 }
 </style>

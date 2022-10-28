@@ -1,9 +1,11 @@
 export interface User {
     id: number,
-    email: string,
     firstName: string,
     lastName: string,
-    points: number, 
+    email: string,
+    phone: string,
+    points: number,
+    isAdmin?: boolean,
     roles: Array<string>,
     permissions: Array<string>,
 }

@@ -2,16 +2,17 @@ export enum MenuSide {
     'LEFT',
     'RIGHT',
 }
-export enum ViewMode { 
-    'LIST', 
-    'CALENDAR' };
+export enum ViewMode {
+    'LIST',
+    'CALENDAR'
+};
 
-export interface IUserSettings {
+export type UserSettings = {
     menuSide: MenuSide,
     appointmentViewMode: ViewMode
 }
 
-export class UserSettings implements IUserSettings {
-    menuSide: MenuSide = MenuSide.LEFT;
-    appointmentViewMode = ViewMode.LIST
+export const userSettings: UserSettings = {
+    menuSide: MenuSide.LEFT,
+    appointmentViewMode: ViewMode.LIST
 }

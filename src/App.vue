@@ -5,14 +5,29 @@
 
 
 <script setup lang="ts">
-import { UserSettings } from './models/UserSettings';
-import { provide, reactive } from 'vue';
+import { watch, computed } from 'vue';
+import { useStore } from './services/store/store';
 import ReloadPrompt from './components/ReloadPrompt.vue';
-import { periodicUserFetch } from './services/useUser';
+import { useRouter } from 'vue-router';
+import { RouteNames } from './services/router';
+import { ActionTypes } from './services/store/actions';
 
-const settings = reactive(new UserSettings);
-provide('settings', settings);
+const store = useStore()
+const router = useRouter();
 
+const loggedIn = computed(() => store.state.loggedIn);
+const user = computed(() => store.state.user);
+
+watch(loggedIn, value => {
+  if (value) router.push({ name: RouteNames.Home });
+  if (!value) router.push({ name: RouteNames.Login });
+})
+
+watch(user, value => {
+  if (!value) {
+    store.dispatch(ActionTypes.LoadUser);
+  }
+}, { immediate: true })
 </script>
 
 <style>

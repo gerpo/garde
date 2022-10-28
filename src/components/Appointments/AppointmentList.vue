@@ -2,7 +2,7 @@
     <div v-for="groupAppointments, groupKey in orderedAppointments">
         <div
             :key="groupKey"
-            class="w-full my-2 text-sm text-center text-gray-400 sm:text-left"
+            class="w-full my-2 text-sm text-center text-gray-600 sm:text-left"
         >{{ createMonthString(groupKey.toString()) }}</div>
         <div
             v-for="groupAppointment in  groupAppointments"
@@ -12,7 +12,7 @@
         >
             <div class="flex items-center">
                 <calendar-icon
-                    class="flex-none inline-block w-8 h-8 text-gray-300 transition-colors duration-500 fill-current"
+                    class="flex-none inline-block w-8 h-8 transition-colors duration-500 fill-current text-muted"
                     :class="{
                         'text-green-500': groupAppointment.status == AppointmentStatus.confirmed,
                         'text-red-500': groupAppointment.status == AppointmentStatus.declined
@@ -21,11 +21,11 @@
                 <div class="h-8 mx-3 border rounded-full"></div>
                 <div class="flex flex-col w-4/5 mr-4 sm:flex-wrap sm:flex-row">
                     <h3 class="w-full text-lg">{{ groupAppointment.title }}</h3>
-                    <div class="flex items-center text-sm text-gray-500">
+                    <div class="flex items-center gap-1 text-sm text-gray-600">
                         <clock-icon class="inline-block w-3 h-3 fill-current" />
                         <span>{{ formatDate(groupAppointment.datetime) }}</span>
                     </div>
-                    <div class="flex items-center text-sm text-gray-500 sm:ml-2">
+                    <div class="flex items-center gap-1 text-sm text-gray-600 sm:ml-2">
                         <location-marker-icon class="inline-block w-3 h-3 fill-current" />
                         <span>{{ groupAppointment.location }}</span>
                     </div>
@@ -51,7 +51,6 @@ import { computed, ComputedRef } from 'vue';
 import ConfirmationButton from './ConfirmationButton.vue'
 
 const props = defineProps<{ appointments: Appointment[] }>();
-//const emit = defineEmits<{ (event: 'openDetails', appointment: Appointment): void }>();
 const emit = defineEmits(['openDetails'])
 
 function showAppointmentDetails(appointment: Appointment) {
@@ -60,3 +59,17 @@ function showAppointmentDetails(appointment: Appointment) {
 
 const orderedAppointments: ComputedRef<{ [key: string]: Appointment[] }> = computed(() => groupByMonth(props.appointments, 'datetime'));
 </script>
+
+<style scoped>
+.slide-fade-enter-active {
+    transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+    transition: all 0.3s ease-in-out;
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
+}
+</style>

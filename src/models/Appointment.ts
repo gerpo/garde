@@ -6,7 +6,7 @@ export enum AppointmentStatus {
     'declined',
 }
 
-export interface Appointment extends IModel {
+export type Appointment = {
     id: number,
     title: string,
     description?: string,
@@ -15,6 +15,13 @@ export interface Appointment extends IModel {
     status: AppointmentStatus
     confirmationRequired?: boolean
     confirmationDeadline?: Date
+}
+
+export type NewAppointment = Omit<Appointment, 'id'> & {
+    appointmentFor: {
+        roles: string[],
+        individuals: string[]
+    }
 }
 
 export class DummyAppointment implements Appointment {

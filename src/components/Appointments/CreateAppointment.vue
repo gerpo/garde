@@ -6,23 +6,36 @@
             <input
                 type="text"
                 id="title"
-                v-model="title"
+                v-model="newAppointment.title"
                 class="w-full rounded"
                 placeholder="Title"
             />
         </div>
         <div class="flex gap-2">
-            <input type="date" name="date" id="date" v-model="date" class="flex-1 rounded" />
-            <input type="time" name="date" id="date" v-model="time" class="rounded flex-2" />
+            <input
+                type="datetime-local"
+                name="date"
+                id="date"
+                v-model="newAppointment.datetime"
+                pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
+                class="flex-1 rounded"
+            />
         </div>
         <div class="w-full">
-            <input type="text" name="date" id="date" class="w-full rounded" placeholder="Location" />
+            <input
+                type="text"
+                name="date"
+                id="date"
+                v-model="newAppointment.location"
+                class="w-full rounded"
+                placeholder="Location"
+            />
         </div>
         <div class="w-full mx-auto my-2 text-justify">
             <label for="description" class="sr-only" />
             <textarea
                 id="description"
-                v-model="description"
+                v-model="newAppointment.description"
                 class="w-full rounded"
                 placeholder="Description"
             />
@@ -51,33 +64,25 @@
         </div>
 
         <button
+            @click="createAppointment"
             class="p-2 text-sm bg-green-100 border-2 border-green-600 rounded hover:bg-green-400 hover:text-white disabled:bg-transparent disabled:hover:bg-gray-100 disabled:cursor-not-allowed"
         >Save</button>
-
-        <!-- <div class="flex justify-end gap-2 text-sm">
-            <reset-button :appointment="appointment" class="mr-auto" />
-            <decline-button :appointment="appointment" />
-            <confirmation-button :appointment="appointment" class="w-1/3" />
-        </div>-->
     </div>
 </template>
 
-<script setup lang="ts">import { ref } from 'vue';
+<script setup lang="ts">
+import { reactive, ref } from 'vue';
+import { NewAppointment } from '../../models/Appointment';
+import { AppointmentActionTypes } from '../../services/store/modules/appointments/actions';
+import { useStore } from '../../services/store/store';
 
-import { useAppointmentService } from '../../services/api/useDataService';
-
-const { data, loading, error, getData: saveAppointment } = useAppointmentService('create')
-
-const title = ref('');
-const description = ref('');
-const date = ref('');
-const time = ref('');
-const datetime = ref('');
-const location = ref('');
+const store = useStore()
 const confirmationRequired = ref(false)
 const deadline = ref('')
 
-function createAppointment() {
+const newAppointment = reactive({} as NewAppointment);
 
+function createAppointment() {
+    store.dispatch(AppointmentActionTypes.CreateAppointment, newAppointment)
 }
 </script>

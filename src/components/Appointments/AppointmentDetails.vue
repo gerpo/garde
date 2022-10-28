@@ -1,6 +1,9 @@
 <template>
     <div class="flex flex-col gap-2">
-        <h2 class="text-lg">{{ appointment.title }}</h2>
+        <div class="flex items-center justify-between">
+            <h2 class="text-lg">{{ appointment.title }}</h2>
+            <delete-button :appointment="appointment" />
+        </div>
         <div class="flex flex-wrap gap-3 p-2 bg-gray-100 rounded">
             <div class="flex items-center">
                 <calendar-icon class="inline-block w-5 h-5 text-gray-600 fill-current" />
@@ -19,7 +22,7 @@
             class="p-2 bg-gray-100 rounded"
             :class="{ 'bg-yellow-200': appointment.confirmationRequired }"
         >Keine Zusage erforderlich</div>
-        <div class="mx-auto my-2 text-justify">
+        <div class="w-full mx-auto my-2 text-justify">
             <p v-if="appointment.description">{{ appointment.description }}</p>
             <p v-else>{{ t('noDescription') }}</p>
         </div>
@@ -33,13 +36,15 @@
 </template>
 
 <script setup lang="ts">
-import { Appointment } from '../../models/Appointment';
-import { formatDate } from '../../utils/helpers';
+import ResetButton from './ResetButton.vue';
+import DeleteButton from './DeleteButton.vue';
+import DeclineButton from './DeclineButton.vue';
+import ConfirmationButton from './ConfirmationButton.vue';
+
 import { CalendarIcon, ClockIcon, LocationMarkerIcon } from '@heroicons/vue/solid';
 import { useI18n } from 'vue-i18n';
-import ConfirmationButton from './ConfirmationButton.vue';
-import DeclineButton from './DeclineButton.vue';
-import ResetButton from './ResetButton.vue';
+import { formatDate } from '../../utils/helpers';
+import { Appointment } from '../../models/Appointment';
 
 defineProps<{ appointment: Appointment }>();
 const { t } = useI18n();
